@@ -2,83 +2,83 @@
 
 respostas: pt-br
 
-1.) o endpoint CRUD para instituições
+1. o endpoint CRUD para instituições
 
-a) criar o server.js
+    a) criar o server.js
 
-b) criar a rota e controlers para o endpoints: /api/v1/instituicoes
+    b) criar a rota e controlers para o endpoints: /api/v1/instituicoes
 
-b.1) POST /api/v1/instituicoes
-Cria instituição.
-Body (JSON): { nome, cnpj, email?, telefone?, endereco?, ativo? }
-Retorna 201 + objeto criado.
-valida duplicidade de CNPJ (409).
+        b.1) POST /api/v1/instituicoes
+        Cria instituição.
+        Body (JSON): { nome, cnpj, email?, telefone?, endereco?, ativo? }
+        Retorna 201 + objeto criado.
+        valida duplicidade de CNPJ (409).
 
-b.2) GET /api/v1/instituicoes
-Lista todas em JSON array.
-Suportar query params simples: ?ativo=true|false, ?nome=... (filtro contém, case-insensitive), ?page=1&limit=20.
+        b.2) GET /api/v1/instituicoes
+        Lista todas em JSON array.
+        Suportar query params simples: ?ativo=true|false, ?nome=... (filtro contém, case-insensitive), ?page=1&limit=20.
 
-b.) PUT /api/v1/instituicoes/:id
-Atualiza por id (ObjectId).
-Body parcial permitido.
-Retorna 200 + objeto atualizado, 404 se não encontrado.
+        b.3) PUT /api/v1/instituicoes/:id
+        Atualiza por id (ObjectId).
+        Body parcial permitido.
+        Retorna 200 + objeto atualizado, 404 se não encontrado.
 
-b.4) DELETE /api/v1/instituicoes/:id
-Remove por id.
-Retorna 204 sem corpo, 404 se não encontrado.
+        b.4) DELETE /api/v1/instituicoes/:id
+        Remove por id.
+        Retorna 204 sem corpo, 404 se não encontrado.
 
-b.5) Convenções de resposta de erro (todas as rotas)
-JSON { message: string, details?: any }
-400 validação, 404 não encontrado, 409 conflito, 500 erro interno.
+        b.5) Convenções de resposta de erro (todas as rotas)
+        JSON { message: string, details?: any }
+        400 validação, 404 não encontrado, 409 conflito, 500 erro interno.
 
-c) criar o server.js
+    c) criar o server.js
 
-c.1) suporte a https (colocar parametros https no .env)
+        c.1) suporte a https (colocar parametros https no .env)
 
-c.2) suporte ao cors
+        c.2) suporte ao cors
 
-c.3) criar .env do backend com as aseuintes informações:
-# Mongo
-MONGO_INITDB_HOST=localhost
-MONGO_INITDB_PORT=27017
-MONGO_INITDB_ROOT_USERNAME=pm2025-2-mongo-admin
-MONGO_INITDB_ROOT_PASSWORD=pm2025-2-mongo-secret
-MONGO_INITDB_DATABASE=pm2025-2-mongodb
+        c.3) criar .env do backend com as aseuintes informações:
+        # Mongo
+        MONGO_INITDB_HOST=localhost
+        MONGO_INITDB_PORT=27017
+        MONGO_INITDB_ROOT_USERNAME=pm2025-2-mongo-admin
+        MONGO_INITDB_ROOT_PASSWORD=pm2025-2-mongo-secret
+        MONGO_INITDB_DATABASE=pm2025-2-mongodb
 
-# HTTPS
-HTTPS_ENABLED=true
-SSL_KEY_PATH=./certs/key.pem
-SSL_CERT_PATH=./certs/cert.pem
+        # HTTPS
+        HTTPS_ENABLED=true
+        SSL_KEY_PATH=./certs/key.pem
+        SSL_CERT_PATH=./certs/cert.pem
 
-# App
-PORT=3000
-CORS_ORIGIN=*
-NODE_ENV=development
+        # App
+        PORT=3000
+        CORS_ORIGIN=*
+        NODE_ENV=development
 
-c.4) executar cliente mongo com parametros obtidos via .env
+        c.4) executar cliente mongo com parametros obtidos via .env
 
-c.5) Estrutura
-server.js deve:
-Carregar .env via configurationLoader.js.
-Conectar ao MongoDB com database.js usando credenciais do .env.
-Habilitar CORS com origem de CORS_ORIGIN.
-Registrar JSON parser, morgan (logger), helmet.
-Montar rotas de /api/v1/instituicoes.
-Montar Swagger UI em /api-docs via swagger.js.
-Registrar errorHandler.js como middleware final.
-Subir HTTPS se HTTPS_ENABLED=true usando httpsConfig.js; caso contrário, HTTP.
+        c.5) Estrutura
+        server.js deve:  
+        Carregar .env via configurationLoader.js.  
+        Conectar ao MongoDB com database.js usando credenciais do .env.  
+        Habilitar CORS com origem de CORS_ORIGIN.  
+        Registrar JSON parser, morgan (logger), helmet.  
+        Montar rotas de /api/v1/instituicoes.  
+        Montar Swagger UI em /api-docs via swagger.js.  
+        Registrar errorHandler.js como middleware final.  
+        Subir HTTPS se HTTPS_ENABLED=true usando httpsConfig.js; caso contrário, HTTP.
 
-2.) Definir suporte ao Swagger
+2. Definir suporte ao Swagger
 
-3.) Criar a documentação swagger e JSDoc
+3. Criar a documentação swagger e JSDoc
 
-4)Critérios de aceite
-Iniciar banco com string de conexão construída de .env:
-mongodb://<user>:<password>@<host>:<port>/<database>?authSource=admin
-Com HTTPS_ENABLED=true e certificados válidos no caminho, servidor expõe https://localhost:PORT.
-GET /api/v1/instituicoes retorna array JSON (vazio se não houver registros).
-POST com CNPJ repetido retorna 409 e mensagem clara em pt-BR.
-PUT/DELETE com id inexistente retornam 404.
-Swagger UI acessível em /api-docs com exemplos válidos.
-Código com JSDoc e tratamento de erros centralizado (errorHandler.js).
-Respostas e mensagens em pt-BR.
+4. Critérios de aceite
+Iniciar banco com string de conexão construída de .env:  
+mongodb://<user>:<password>@<host>:<port>/<database>?authSource=admin  
+Com HTTPS_ENABLED=true e certificados válidos no caminho, servidor expõe https://localhost:PORT.  
+GET /api/v1/instituicoes retorna array JSON (vazio se não houver registros).  
+POST com CNPJ repetido retorna 409 e mensagem clara em pt-BR.  
+PUT/DELETE com id inexistente retornam 404.  
+Swagger UI acessível em /api-docs com exemplos válidos.  
+Código com JSDoc e tratamento de erros centralizado (errorHandler.js).  
+Respostas e mensagens em pt-BR.  

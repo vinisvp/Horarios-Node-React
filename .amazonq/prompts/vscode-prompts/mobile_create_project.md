@@ -1,7 +1,7 @@
-# # 1.) Crie a pasta mobile no @workspace
-# 2.) Crie um projeto react native com suporte ao expo metro para o projeto # # mobile na pasta mobile
-# 3.) Aplicação Mobile
-# a) criar uma aplicação mobile idêntica a aplicação web frontend
+# 1. Crie a pasta mobile no @workspace
+# 2. Crie um projeto react native com suporte ao expo metro para o projeto mobile na pasta mobile
+# 3. Aplicação Mobile
+    a) criar uma aplicação mobile idêntica a aplicação web frontend
 
 Erro: Erro no emulador: java.lang.String cannot be cast to java.lang.Boolean 
 Este erro ocorre no createview->updateProperties->setProperty

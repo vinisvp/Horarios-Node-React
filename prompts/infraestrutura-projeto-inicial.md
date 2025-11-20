@@ -10,4 +10,4 @@ resposta: pt-br
 
 Corrigir:
 
-6.) incluir uma network nos containers: pm2025-2-network
+# 6.) incluir uma network nos containers: pm2025-2-network
