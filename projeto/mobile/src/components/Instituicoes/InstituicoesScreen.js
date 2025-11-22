@@ -19,7 +19,7 @@ import {
 } from 'react-native-paper';
 import { instituicoesService } from '../../services/api';
 
-const InstituicoesScreen = () => {
+const InstituicoesScreen = ({ navigation }) => {
   const [instituicoes, setInstituicoes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -103,6 +103,7 @@ const InstituicoesScreen = () => {
   };
 
   const removerInstituicao = (id) => {
+    console.log('Tentando remover instituição:', id);
     Alert.alert(
       'Confirmar Remoção',
       'Tem certeza que deseja remover esta instituição?',
@@ -113,11 +114,14 @@ const InstituicoesScreen = () => {
           style: 'destructive',
           onPress: async () => {
             try {
-              await instituicoesService.remover(id);
+              console.log('Chamando API para remover:', id);
+              const response = await instituicoesService.remover(id);
+              console.log('Resposta da API:', response);
               mostrarSnackbar('Instituição removida com sucesso');
               carregarInstituicoes();
             } catch (error) {
-              const message = error.response?.data?.message || 'Erro ao remover instituição';
+              console.error('Erro ao remover instituição:', error);
+              const message = error.response?.data?.message || error.message || 'Erro ao remover instituição';
               mostrarSnackbar(message);
             }
           },
@@ -139,6 +143,7 @@ const InstituicoesScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Instituições" />
       </Appbar.Header>
 
