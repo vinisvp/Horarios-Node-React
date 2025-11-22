@@ -100,50 +100,96 @@ npm start
 ✅ **Estrutura de Projeto**
 - Organização em pastas (backend, frontend, mobile)
 - Separação de infraestrutura
+- Configuração de prompts e regras Amazon Q (.amazonq/)
+- Documentação técnica completa
 
 ✅ **Infraestrutura Docker**
-- Serviço MongoDB configurado
-- Serviço Portainer para gerenciamento
-- Network dedicada para comunicação
-- Volumes persistentes para dados
+- Serviço MongoDB 7 com autenticação
+- Serviço Portainer CE para gerenciamento de containers
+- Network dedicada (pm2025-2-network) para comunicação
+- Volumes persistentes para dados (mongo_data, portainer_data)
+- Healthcheck configurado para MongoDB
+- Configuração de restart automático
 
-✅ **Backend - API REST**
-- Projeto Node.js com Express e Mongoose
-- Modelo de dados para Instituições e Cursos
-- CRUD completo para instituições (/api/v1/instituicoes)
-- CRUD completo para cursos (/api/v1/cursos)
-- Relacionamento entre Cursos e Instituições
-- Validação de dados e tratamento de erros
-- Suporte a HTTPS configurável
-- Documentação Swagger em /api-docs
-- Middleware de segurança (Helmet, CORS)
-- Logging com Morgan
-- Paginação e filtros nas consultas
+✅ **Backend - API REST Node.js**
+- **Framework**: Express.js com Mongoose ODM
+- **Segurança**: Helmet, CORS configurável, middleware de tratamento de erros
+- **Logging**: Morgan para logs de requisições
+- **Documentação**: Swagger UI em /api-docs com JSDoc completo
+- **Configuração**: Sistema modular de configuração com .env
+- **HTTPS**: Suporte opcional a HTTPS configurável
+- **Banco de Dados**: MongoDB com conexão autenticada
 
-✅ **Frontend Web - React**
-- Projeto React com Vite e Material-UI
-- Layout responsivo com cabeçalho, área de trabalho e rodapé
-- Menu lateral (drawer) com navegação
-- Componente de Instituições com CRUD completo
-- Grid de dados com ordenação e filtros
-- Modais para edição e criação
-- Integração com API do backend
-- Design responsivo para mobile e desktop
+**Modelos de Dados:**
+- **Instituições**: nome, cnpj (único), email, telefone, endereço, status ativo
+- **Cursos**: nome, instituicaoId (referência), turnos (Manhã/Tarde/Noite/Integral), status ativo
+- **Relacionamentos**: Cursos vinculados a Instituições com índices otimizados
+- **Validações**: Campos obrigatórios, formatos de email, limites de caracteres
+- **Timestamps**: createdAt e updatedAt automáticos
 
-✅ **Mobile App - React Native**
-- Projeto React Native com Expo
-- Interface Material Design com React Native Paper
-- CRUD completo de Instituições idêntico ao web
-- Cards responsivos para listagem
-- Formulários modais para criação/edição
-- Filtros em tempo real
-- Navegação com React Navigation
-- Integração com mesma API do backend
-- Mensagens de feedback em português
-- Confirmações nativas para exclusões
+**Endpoints da API:**
+- **Instituições**: POST, GET (com filtros), PUT, DELETE em /api/v1/instituicoes
+- **Cursos**: POST, GET (com filtros), PUT, DELETE em /api/v1/cursos
+- **Filtros**: Por nome, status ativo, instituição (para cursos)
+- **Paginação**: Suporte a page e limit em todas as listagens
+- **Tratamento de Erros**: Respostas padronizadas com códigos HTTP apropriados
 
-✅ **Documentação**
-- README.md atualizado
-- Documentos de requisitos e horários
-- JSDoc em todo o código
-- Documentação Swagger da API
+✅ **Frontend Web - React + Vite**
+- **UI Framework**: Material-UI (MUI) v7 com tema customizado
+- **Roteamento**: React Router DOM v7
+- **Layout Responsivo**: Cabeçalho, menu lateral (drawer), área de trabalho, rodapé
+- **Componentes**: Layout modular, Menu de navegação, Instituições CRUD
+- **Funcionalidades**:
+  - Tabela de dados com ordenação e filtros em tempo real
+  - Modais para criação e edição de registros
+  - Confirmações de exclusão
+  - Snackbars para feedback de ações
+  - Validação de formulários
+  - Integração completa com API backend
+  - Design responsivo para desktop e mobile
+
+✅ **Mobile App - React Native + Expo**
+- **Framework**: React Native 0.81.5 com Expo SDK 54
+- **UI Library**: React Native Paper v5 (Material Design)
+- **Navegação**: React Navigation v6 com Stack Navigator
+- **Funcionalidades Implementadas**:
+  - CRUD completo de Instituições (idêntico ao web)
+  - Cards responsivos para listagem de dados
+  - Searchbar para filtros em tempo real
+  - Formulários modais com validação
+  - FAB (Floating Action Button) para nova instituição
+  - Confirmações nativas (Alert) para exclusões
+  - Snackbar para feedback de ações
+  - Switch para campos booleanos
+  - Integração com mesma API do backend
+  - Interface em português brasileiro
+  - Suporte a teclados específicos (email, telefone)
+
+✅ **Serviços e Integração**
+- **API Service**: Axios configurado para comunicação HTTP
+- **Base URL**: Configurável para diferentes ambientes
+- **Tratamento de Erros**: Interceptação e tratamento de respostas de erro
+- **Consistência**: Mesma estrutura de serviços entre web e mobile
+
+✅ **Qualidade e Manutenibilidade**
+- **Documentação**: JSDoc completo em todo o código backend
+- **Swagger**: Documentação interativa da API com exemplos
+- **ESLint**: Configuração de linting para frontend
+- **Estrutura Modular**: Separação clara de responsabilidades
+- **Tratamento de Erros**: Middleware centralizado no backend
+- **Validação**: Validações tanto no frontend quanto no backend
+- **Feedback**: Mensagens de sucesso e erro em português
+
+✅ **Configuração e Deploy**
+- **Variáveis de Ambiente**: Configuração via .env com exemplos
+- **Scripts NPM**: Scripts de desenvolvimento e produção
+- **Docker**: Infraestrutura containerizada pronta para produção
+- **Portainer**: Interface web para gerenciamento de containers
+- **Volumes**: Persistência de dados configurada
+
+✅ **Documentação Técnica**
+- README.md completo com instruções de instalação e uso
+- Documentos de requisitos do sistema (PDF)
+- Horários dos laboratórios (PDF)
+- Prompts organizados para desenvolvimento com Amazon Q
+- Status do projeto documentado

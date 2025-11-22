@@ -25,10 +25,8 @@ const app = express();
 app.use(helmet());
 app.use(morgan('combined'));
 
-// CORS
-app.use(cors({
-  origin: config.app.corsOrigin
-}));
+// CORS - permitir todas as origens para desenvolvimento
+app.use(cors());
 
 // Parser JSON
 app.use(express.json());

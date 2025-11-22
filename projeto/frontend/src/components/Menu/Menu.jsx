@@ -15,15 +15,30 @@ import {
 } from '@mui/material';
 import {
   Business as BusinessIcon,
+  School as SchoolIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
 import Instituicoes from '../Instituicoes/Instituicoes';
+import Cursos from '../Cursos/Cursos';
 
+/**
+ * Componente de menu lateral da aplicação
+ * @component
+ * @param {Object} props - Props do componente
+ * @param {boolean} props.open - Estado de abertura do menu
+ * @param {Function} props.onClose - Função para fechar o menu
+ * @returns {JSX.Element} Componente de menu
+ */
 const Menu = ({ open, onClose }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState('');
 
+  /**
+   * Abre modal com conteúdo específico
+   * @param {string} title - Título do modal
+   * @param {JSX.Element} content - Conteúdo do modal
+   */
   const handleOpenModal = (title, content) => {
     setModalTitle(title);
     setModalContent(content);
@@ -31,14 +46,27 @@ const Menu = ({ open, onClose }) => {
     onClose();
   };
 
+  /**
+   * Fecha o modal
+   */
   const handleCloseModal = () => {
     setModalOpen(false);
     setModalContent(null);
     setModalTitle('');
   };
 
+  /**
+   * Manipula clique no menu de instituições
+   */
   const handleInstituicoesClick = () => {
     handleOpenModal('Gerenciar Instituições', <Instituicoes />);
+  };
+
+  /**
+   * Manipula clique no menu de cursos
+   */
+  const handleCursosClick = () => {
+    handleOpenModal('Gerenciar Cursos', <Cursos />);
   };
 
   return (
@@ -58,6 +86,14 @@ const Menu = ({ open, onClose }) => {
                   <BusinessIcon />
                 </ListItemIcon>
                 <ListItemText primary="Instituições" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleCursosClick}>
+                <ListItemIcon>
+                  <SchoolIcon />
+                </ListItemIcon>
+                <ListItemText primary="Cursos" />
               </ListItemButton>
             </ListItem>
           </List>

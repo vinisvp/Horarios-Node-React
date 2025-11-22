@@ -14,7 +14,7 @@ const mongoose = require('mongoose');
  */
 const criarCurso = async (req, res) => {
   try {
-    const { instituicaoId, nome, turnos, status } = req.body;
+    const { instituicaoId, nome, turnos, ativo } = req.body;
 
     // Verificar se a instituição existe pelo ID
     const instituicao = await Instituicao.findOne({ _id: instituicaoId }).catch(() => null);
@@ -26,7 +26,7 @@ const criarCurso = async (req, res) => {
       instituicaoId,
       nome,
       turnos: turnos || [],
-      ativo: status !== undefined ? status === 'Ativo' : true
+      ativo: ativo !== undefined ? ativo : true
     });
 
     const cursoSalvo = await curso.save();
@@ -93,7 +93,7 @@ const listarCursos = async (req, res) => {
 const atualizarCurso = async (req, res) => {
   try {
     const { id } = req.params;
-    const { instituicaoId, nome, turnos, status } = req.body;
+    const { instituicaoId, nome, turnos, ativo } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: 'ID do curso inválido' });
@@ -112,7 +112,7 @@ const atualizarCurso = async (req, res) => {
     
     if (nome !== undefined) dadosAtualizacao.nome = nome;
     if (turnos !== undefined) dadosAtualizacao.turnos = turnos;
-    if (status !== undefined) dadosAtualizacao.ativo = status === 'Ativo';
+    if (ativo !== undefined) dadosAtualizacao.ativo = ativo;
 
     const curso = await Curso.findByIdAndUpdate(
       id,
@@ -139,19 +139,24 @@ const atualizarCurso = async (req, res) => {
 const removerCurso = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log('Tentando remover curso com ID:', id);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.log('ID do curso inválido:', id);
       return res.status(400).json({ message: 'ID do curso inválido' });
     }
 
     const curso = await Curso.findByIdAndDelete(id);
 
     if (!curso) {
+      console.log('Curso não encontrado:', id);
       return res.status(404).json({ message: 'Curso não encontrado' });
     }
 
+    console.log('Curso removido com sucesso:', id);
     res.status(204).send();
   } catch (error) {
+    console.error('Erro ao remover curso:', error);
     res.status(500).json({ message: 'Erro ao remover curso', details: error.message });
   }
 };

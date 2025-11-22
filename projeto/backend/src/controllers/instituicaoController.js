@@ -85,16 +85,20 @@ const atualizarInstituicao = async (req, res, next) => {
  */
 const removerInstituicao = async (req, res, next) => {
   try {
+    console.log('Tentando remover instituição com ID:', req.params.id);
     const instituicao = await Instituicao.findByIdAndDelete(req.params.id);
 
     if (!instituicao) {
+      console.log('Instituição não encontrada:', req.params.id);
       return res.status(404).json({
         message: 'Instituição não encontrada'
       });
     }
 
+    console.log('Instituição removida com sucesso:', req.params.id);
     res.status(204).send();
   } catch (error) {
+    console.error('Erro ao remover instituição:', error);
     next(error);
   }
 };
