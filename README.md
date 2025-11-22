@@ -83,9 +83,16 @@ npm start
 - `PUT /api/v1/instituicoes/:id` - Atualizar instituição
 - `DELETE /api/v1/instituicoes/:id` - Remover instituição
 
+### Cursos
+- `POST /api/v1/cursos` - Criar curso
+- `GET /api/v1/cursos` - Listar cursos (com filtros)
+- `PUT /api/v1/cursos/:id` - Atualizar curso
+- `DELETE /api/v1/cursos/:id` - Remover curso
+
 #### Parâmetros de Consulta
 - `?ativo=true|false` - Filtrar por status
 - `?nome=texto` - Filtrar por nome (contém)
+- `?instituicaoId=id` - Filtrar por instituição
 - `?page=1&limit=20` - Paginação
 
 ## Funcionalidades Implementadas
@@ -102,8 +109,10 @@ npm start
 
 ✅ **Backend - API REST**
 - Projeto Node.js com Express e Mongoose
-- Modelo de dados para Instituições
+- Modelo de dados para Instituições e Cursos
 - CRUD completo para instituições (/api/v1/instituicoes)
+- CRUD completo para cursos (/api/v1/cursos)
+- Relacionamento entre Cursos e Instituições
 - Validação de dados e tratamento de erros
 - Suporte a HTTPS configurável
 - Documentação Swagger em /api-docs
