@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import {
   Appbar,
@@ -86,6 +86,11 @@ const InstituicoesScreen = ({ navigation }) => {
   };
 
   const salvarInstituicao = async () => {
+    if (!formData.nome.trim() || !formData.cnpj.trim()) {
+      mostrarSnackbar('Nome e CNPJ são obrigatórios');
+      return;
+    }
+
     try {
       if (editingId) {
         await instituicoesService.atualizar(editingId, formData);
@@ -103,7 +108,6 @@ const InstituicoesScreen = ({ navigation }) => {
   };
 
   const removerInstituicao = (id) => {
-    console.log('Tentando remover instituição:', id);
     Alert.alert(
       'Confirmar Remoção',
       'Tem certeza que deseja remover esta instituição?',
@@ -114,13 +118,10 @@ const InstituicoesScreen = ({ navigation }) => {
           style: 'destructive',
           onPress: async () => {
             try {
-              console.log('Chamando API para remover:', id);
-              const response = await instituicoesService.remover(id);
-              console.log('Resposta da API:', response);
+              await instituicoesService.remover(id);
               mostrarSnackbar('Instituição removida com sucesso');
               carregarInstituicoes();
             } catch (error) {
-              console.error('Erro ao remover instituição:', error);
               const message = error.response?.data?.message || error.message || 'Erro ao remover instituição';
               mostrarSnackbar(message);
             }
@@ -130,11 +131,15 @@ const InstituicoesScreen = ({ navigation }) => {
     );
   };
 
-  const instituicoesFiltradas = instituicoes.filter((instituicao) =>
-    Object.values(instituicao).some((value) =>
-      String(value).toLowerCase().includes(filtro.toLowerCase())
-    )
-  );
+  const instituicoesFiltradas = useMemo(() => {
+    if (!filtro.trim()) return instituicoes;
+    const filtroLower = filtro.toLowerCase();
+    return instituicoes.filter((instituicao) =>
+      instituicao.nome?.toLowerCase().includes(filtroLower) ||
+      instituicao.cnpj?.toLowerCase().includes(filtroLower) ||
+      instituicao.email?.toLowerCase().includes(filtroLower)
+    );
+  }, [instituicoes, filtro]);
 
   useEffect(() => {
     carregarInstituicoes();
@@ -149,7 +154,7 @@ const InstituicoesScreen = ({ navigation }) => {
 
       <ScrollView 
         style={{ flex: 1 }}
-        contentContainerStyle={{ padding: 16, paddingBottom: 80 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         showsVerticalScrollIndicator={true}
       >
         <Searchbar
