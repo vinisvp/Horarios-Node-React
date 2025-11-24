@@ -147,16 +147,17 @@ const InstituicoesScreen = ({ navigation }) => {
         <Appbar.Content title="Instituições" />
       </Appbar.Header>
 
-      <View style={{ padding: 16 }}>
+      <ScrollView 
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 80 }}
+        showsVerticalScrollIndicator={true}
+      >
         <Searchbar
           placeholder="Filtrar instituições..."
           onChangeText={setFiltro}
           value={filtro}
           style={{ marginBottom: 16 }}
         />
-      </View>
-
-      <ScrollView style={{ flex: 1, padding: 16 }}>
         {instituicoesFiltradas.map((instituicao) => (
           <Card key={instituicao._id} style={{ marginBottom: 12 }}>
             <Card.Content>
