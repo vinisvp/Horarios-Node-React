@@ -226,21 +226,20 @@ const CursosScreen = ({ navigation }) => {
         <Appbar.Content title="Cursos" />
       </Appbar.Header>
 
-      <View style={{ padding: 16 }}>
+      <ScrollView 
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 80 }}
+        showsVerticalScrollIndicator={true}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Searchbar
           placeholder="Filtrar cursos..."
           onChangeText={setFiltro}
           value={filtro}
           style={{ marginBottom: 16 }}
         />
-      </View>
-
-      <ScrollView 
-        style={{ flex: 1, padding: 16 }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
         {cursosFiltrados.map((curso) => (
           <Card key={curso._id} style={{ marginBottom: 12 }}>
             <Card.Content>

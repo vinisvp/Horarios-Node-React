@@ -47,6 +47,14 @@ const MainScreen = ({ navigation }) => {
             right={props => <List.Icon {...props} icon="chevron-right" />}
             onPress={() => navigation.navigate('Cursos')}
           />
+          
+          <List.Item
+            title="Professores"
+            description="Gerenciar professores do sistema"
+            left={props => <List.Icon {...props} icon="account-tie" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+            onPress={() => navigation.navigate('Professores')}
+          />
         </List.Section>
       </View>
     </View>

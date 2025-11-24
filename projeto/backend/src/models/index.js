@@ -5,8 +5,10 @@
 
 const Instituicao = require('./Instituicao');
 const Curso = require('./Curso');
+const Professor = require('./Professor');
 
 module.exports = {
   Instituicao,
-  Curso
+  Curso,
+  Professor
 };
