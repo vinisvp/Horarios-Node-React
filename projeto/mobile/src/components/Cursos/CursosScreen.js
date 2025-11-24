@@ -36,7 +36,7 @@ const CursosScreen = ({ navigation }) => {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [menuVisible, setMenuVisible] = useState(false);
-  const [menuAnchor, setMenuAnchor] = useState(null);
+
   
   const [formData, setFormData] = useState({
     nome: '',
@@ -156,7 +156,6 @@ const CursosScreen = ({ navigation }) => {
    * Remove curso
    */
   const removerCurso = (id) => {
-    console.log('Tentando remover curso:', id);
     Alert.alert(
       'Confirmar Remoção',
       'Tem certeza que deseja remover este curso?',
@@ -167,13 +166,10 @@ const CursosScreen = ({ navigation }) => {
           style: 'destructive',
           onPress: async () => {
             try {
-              console.log('Chamando API para remover curso:', id);
-              const response = await cursosService.remover(id);
-              console.log('Resposta da API:', response);
+              await cursosService.remover(id);
               mostrarSnackbar('Curso removido com sucesso');
               carregarCursos();
             } catch (error) {
-              console.error('Erro ao remover curso:', error);
               const message = error.response?.data?.message || error.message || 'Erro ao remover curso';
               mostrarSnackbar(message);
             }
@@ -228,7 +224,7 @@ const CursosScreen = ({ navigation }) => {
 
       <ScrollView 
         style={{ flex: 1 }}
-        contentContainerStyle={{ padding: 16, paddingBottom: 80 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         showsVerticalScrollIndicator={true}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -341,14 +337,14 @@ const CursosScreen = ({ navigation }) => {
                 <Text style={{ marginBottom: 8, fontSize: 16, fontWeight: 'bold' }}>
                   Turnos
                 </Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                   {turnosDisponiveis.map((turno) => (
                     <Chip
                       key={turno}
                       selected={formData.turnos.includes(turno)}
                       onPress={() => toggleTurno(turno)}
                       mode={formData.turnos.includes(turno) ? 'flat' : 'outlined'}
-                      style={{ margin: 2 }}
+                      style={{ margin: 4 }}
                     >
                       {turno}
                     </Chip>
