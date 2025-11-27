@@ -8,6 +8,7 @@ import InstituicoesScreen from './src/components/Instituicoes/InstituicoesScreen
 import CursosScreen from './src/components/Cursos/CursosScreen';
 import ProfessoresScreen from './src/components/Professores/ProfessoresScreen';
 import DisciplinasScreen from './src/components/Disciplinas/DisciplinasScreen';
+import LaboratoriosScreen from './src/components/Laboratorios/LaboratoriosScreen';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,11 @@ export default function App() {
             name="Disciplinas" 
             component={DisciplinasScreen}
             options={{ title: 'Gerenciamento de Disciplinas' }}
+          />
+          <Stack.Screen 
+            name="Laboratorios" 
+            component={LaboratoriosScreen}
+            options={{ title: 'Gerenciamento de Laboratórios' }}
           />
         </Stack.Navigator>
         <StatusBar style="auto" />

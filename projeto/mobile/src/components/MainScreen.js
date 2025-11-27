@@ -63,6 +63,14 @@ const MainScreen = ({ navigation }) => {
             right={props => <List.Icon {...props} icon="chevron-right" />}
             onPress={() => navigation.navigate('Disciplinas')}
           />
+          
+          <List.Item
+            title="Laboratórios"
+            description="Gerenciar laboratórios do sistema"
+            left={props => <List.Icon {...props} icon="flask" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+            onPress={() => navigation.navigate('Laboratorios')}
+          />
         </List.Section>
       </View>
     </View>
