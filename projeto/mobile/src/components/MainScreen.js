@@ -71,6 +71,14 @@ const MainScreen = ({ navigation }) => {
             right={props => <List.Icon {...props} icon="chevron-right" />}
             onPress={() => navigation.navigate('Laboratorios')}
           />
+          
+          <List.Item
+            title="Blocos de Horários"
+            description="Gerenciar blocos de horários do sistema"
+            left={props => <List.Icon {...props} icon="clock-outline" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+            onPress={() => navigation.navigate('Blocos')}
+          />
         </List.Section>
       </View>
     </View>

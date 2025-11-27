@@ -19,6 +19,7 @@ import {
   Person as PersonIcon,
   MenuBook as MenuBookIcon,
   Science as ScienceIcon,
+  Schedule as ScheduleIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
 import Instituicoes from '../Instituicoes/Instituicoes';
@@ -26,6 +27,7 @@ import Cursos from '../Cursos/Cursos';
 import Professores from '../Professores/Professores';
 import Disciplinas from '../Disciplinas/Disciplinas';
 import Laboratorios from '../Laboratorios/Laboratorios';
+import Blocos from '../Blocos/Blocos';
 
 /**
  * Componente de menu lateral da aplicação
@@ -96,6 +98,13 @@ const Menu = ({ open, onClose }) => {
     handleOpenModal('Gerenciar Laboratórios', <Laboratorios />);
   };
 
+  /**
+   * Manipula clique no menu de blocos de horários
+   */
+  const handleBlocosClick = () => {
+    handleOpenModal('Gerenciar Blocos de Horários', <Blocos />);
+  };
+
   return (
     <>
       <Drawer anchor="left" open={open} onClose={onClose}>
@@ -145,6 +154,14 @@ const Menu = ({ open, onClose }) => {
                   <ScienceIcon />
                 </ListItemIcon>
                 <ListItemText primary="Laboratórios" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleBlocosClick}>
+                <ListItemIcon>
+                  <ScheduleIcon />
+                </ListItemIcon>
+                <ListItemText primary="Blocos de Horários" />
               </ListItemButton>
             </ListItem>
           </List>
