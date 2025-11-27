@@ -107,6 +107,12 @@ npm start
 - `PUT /api/v1/laboratorios/:id` - Atualizar laboratório
 - `DELETE /api/v1/laboratorios/:id` - Remover laboratório
 
+### Blocos de Horários
+- `POST /api/v1/blocos` - Criar bloco de horário
+- `GET /api/v1/blocos` - Listar blocos (com filtros)
+- `PUT /api/v1/blocos/:id` - Atualizar bloco
+- `DELETE /api/v1/blocos/:id` - Remover bloco
+
 #### Parâmetros de Consulta
 - `?ativo=true|false` - Filtrar por status (instituições, cursos)
 - `?nome=texto` - Filtrar por nome (contém)
@@ -117,6 +123,9 @@ npm start
 - `?local=texto` - Filtrar por local (laboratórios)
 - `?status=Ativo|Inativo` - Filtrar por status (professores, disciplinas, laboratórios)
 - `?minCapacidade=numero` - Capacidade mínima (laboratórios)
+- `?turno=Manhã|Tarde|Noite|Integral` - Filtrar por turno (blocos)
+- `?diaSemana=Segunda|Terça|...` - Filtrar por dia da semana (blocos)
+- `?ordem=numero` - Filtrar por ordem (blocos)
 - `?page=1&limit=20` - Paginação
 
 ## Funcionalidades Implementadas
@@ -150,8 +159,9 @@ npm start
 - **Professores**: nome, email (único), telefone, status (Ativo/Inativo)
 - **Disciplinas**: nome, cargaHoraria, cursoId (referência), professorId (referência), status (Ativo/Inativo)
 - **Laboratórios**: nome, capacidade (número inteiro > 0), local (opcional), status (Ativo/Inativo)
+- **Blocos de Horários**: turno, diaSemana, inicio, fim, ordem (validação temporal e duplicidade)
 - **Relacionamentos**: Cursos vinculados a Instituições, Disciplinas vinculadas a Cursos e Professores
-- **Validações**: Campos obrigatórios, formatos de email, limites de caracteres, carga horária positiva
+- **Validações**: Campos obrigatórios, formatos de email, limites de caracteres, carga horária positiva, horários válidos
 - **Timestamps**: createdAt e updatedAt automáticos
 
 **Endpoints da API:**
@@ -160,10 +170,11 @@ npm start
 - **Professores**: POST, GET (com filtros), PUT, DELETE em /api/v1/professores
 - **Disciplinas**: POST, GET (com filtros), PUT, DELETE em /api/v1/disciplinas
 - **Laboratórios**: POST, GET (com filtros), PUT, DELETE em /api/v1/laboratorios
-- **Filtros**: Por nome, status, email (professores), curso/professor (disciplinas), capacidade mínima (laboratórios)
+- **Blocos**: POST, GET (com filtros), PUT, DELETE em /api/v1/blocos
+- **Filtros**: Por nome, status, email (professores), curso/professor (disciplinas), capacidade mínima (laboratórios), turno/dia (blocos)
 - **Paginação**: Suporte a page e limit em todas as listagens
 - **Tratamento de Erros**: Respostas padronizadas com códigos HTTP apropriados
-- **Validação de Duplicidade**: Emails únicos (professores), laboratórios com mesmo nome e local (409 Conflict)
+- **Validação de Duplicidade**: Emails únicos (professores), laboratórios com mesmo nome e local, blocos com mesmo turno/dia/ordem (409 Conflict)
 
 ✅ **Frontend Web - React + Vite**
 - **UI Framework**: Material-UI (MUI) v7 com tema customizado
@@ -185,6 +196,7 @@ npm start
 - **Professores**: CRUD com validação de email único
 - **Disciplinas**: CRUD com vinculação a cursos e professores
 - **Laboratórios**: CRUD com validação de capacidade e filtros avançados
+- **Blocos de Horários**: CRUD com validação temporal e seleção de turnos/dias
 
 ✅ **Mobile App - React Native + Expo**
 - **Framework**: React Native 0.81.5 com Expo SDK 54
@@ -211,13 +223,15 @@ npm start
 - **Professores**: CRUD com validação de email
 - **Disciplinas**: CRUD com vinculação a cursos e professores
 - **Laboratórios**: CRUD com validação de capacidade e busca por local
+- **Blocos de Horários**: CRUD com pickers de turno/dia, validação temporal e ordenação automática
 
 ✅ **Serviços e Integração**
 - **API Service**: Axios configurado para comunicação HTTP
 - **Base URL**: Configurável para diferentes ambientes
 - **Tratamento de Erros**: Interceptação e tratamento de respostas de erro
 - **Consistência**: Mesma estrutura de serviços entre web e mobile
-- **Serviços Específicos**: laboratorioService para operações de laboratórios
+- **Serviços Específicos**: laboratorioService e blocoService para operações especializadas
+- **Endpoints Funcionais**: Todos os endpoints DELETE funcionando corretamente após correção das rotas
 
 ✅ **Qualidade e Manutenibilidade**
 - **Documentação**: JSDoc completo em todo o código backend
@@ -228,6 +242,7 @@ npm start
 - **Validação**: Validações tanto no frontend quanto no backend
 - **Feedback**: Mensagens de sucesso e erro em português
 - **Índices de Banco**: Otimização de consultas com índices apropriados
+- **Correções**: Problema dos botões de remover resolvido (rotas registradas corretamente)
 
 ✅ **Configuração e Deploy**
 - **Variáveis de Ambiente**: Configuração via .env com exemplos
