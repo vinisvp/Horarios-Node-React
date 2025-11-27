@@ -24,7 +24,6 @@ const professorSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Email é obrigatório'],
-    unique: true,
     trim: true,
     lowercase: true,
     match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email deve ter um formato válido']

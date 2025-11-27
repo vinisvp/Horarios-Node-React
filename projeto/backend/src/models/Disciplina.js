@@ -19,8 +19,7 @@ const disciplinaSchema = new mongoose.Schema({
   cursoId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Curso',
-    required: [true, 'Curso é obrigatório'],
-    index: true
+    required: [true, 'Curso é obrigatório']
   },
   nome: {
     type: String,
@@ -42,8 +41,7 @@ const disciplinaSchema = new mongoose.Schema({
   professorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Professor',
-    default: null,
-    index: true
+    default: null
   },
   status: {
     type: String,

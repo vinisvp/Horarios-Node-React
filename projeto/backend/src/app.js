@@ -24,9 +24,53 @@ app.get('/', (req, res) => {
   res.json({ message: 'Backend PM2025-2 funcionando!' });
 });
 
+// Importar e configurar rotas
+console.log('Carregando rotas...');
+const instituicaoRoutes = require('./routes/instituicoes');
+const cursoRoutes = require('./routes/cursos');
+const laboratorioRoutes = require('./routes/laboratorioRoutes');
+console.log('Rotas carregadas com sucesso');
+
+// Rotas da API
+app.use('/api/v1/instituicoes', instituicaoRoutes);
+app.use('/api/v1/cursos', cursoRoutes);
+app.use('/api/v1/laboratorios', laboratorioRoutes);
+console.log('Rotas registradas: /api/v1/instituicoes, /api/v1/cursos, /api/v1/laboratorios');
+
+// Configurar Swagger
+const { setupSwagger } = require('./config/swagger');
+setupSwagger(app);
+
+// Middleware de tratamento de erros 404
+app.use('*', (req, res) => {
+  res.status(404).json({
+    message: `Rota ${req.originalUrl} não encontrada`
+  });
+});
+
+// Middleware de tratamento de erros gerais
+app.use((error, req, res, next) => {
+  console.error('Erro:', error);
+  res.status(500).json({
+    message: 'Erro interno do servidor',
+    details: error.message
+  });
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Swagger UI: http://localhost:${PORT}/api-docs`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`Porta ${PORT} em uso, tentando porta ${PORT + 1}...`);
+    app.listen(PORT + 1, () => {
+      console.log(`Servidor rodando na porta ${PORT + 1}`);
+      console.log(`Swagger UI: http://localhost:${PORT + 1}/api-docs`);
+    });
+  } else {
+    console.error('Erro ao iniciar servidor:', err);
+  }
 });
 
 module.exports = app;
