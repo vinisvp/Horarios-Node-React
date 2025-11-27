@@ -15,6 +15,7 @@ const instituicoesRoutes = require('./src/routes/instituicoes');
 const cursosRoutes = require('./src/routes/cursos');
 const professoresRoutes = require('./src/routes/professores');
 const disciplinasRoutes = require('./src/routes/disciplinas');
+const laboratoriosRoutes = require('./src/routes/laboratorioRoutes');
 
 /**
  * Aplicação Express principal
@@ -44,6 +45,7 @@ app.use('/api/v1/instituicoes', instituicoesRoutes);
 app.use('/api/v1/cursos', cursosRoutes);
 app.use('/api/v1/professores', professoresRoutes);
 app.use('/api/v1/disciplinas', disciplinasRoutes);
+app.use('/api/v1/laboratorios', laboratoriosRoutes);
 
 // Rota de teste
 app.get('/', (req, res) => {
@@ -67,9 +69,19 @@ const startServer = () => {
       console.log(`Acesse: https://localhost:${config.app.port}`);
     });
   } else {
-    app.listen(config.app.port, () => {
+    const server = app.listen(config.app.port, () => {
       console.log(`Servidor HTTP rodando na porta ${config.app.port}`);
       console.log(`Acesse: http://localhost:${config.app.port}`);
+    }).on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Porta ${config.app.port} em uso, tentando porta ${config.app.port + 1}...`);
+        app.listen(config.app.port + 1, () => {
+          console.log(`Servidor rodando na porta ${config.app.port + 1}`);
+          console.log(`Acesse: http://localhost:${config.app.port + 1}`);
+        });
+      } else {
+        console.error('Erro ao iniciar servidor:', err);
+      }
     });
   }
 };
