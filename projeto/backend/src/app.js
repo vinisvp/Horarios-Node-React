@@ -26,22 +26,28 @@ app.get('/', (req, res) => {
 
 // Importar e configurar rotas
 console.log('Carregando rotas...');
-const instituicaoRoutes = require('./routes/instituicoes');
-const cursoRoutes = require('./routes/cursos');
-const professorRoutes = require('./routes/professores');
-const disciplinaRoutes = require('./routes/disciplinas');
-const laboratorioRoutes = require('./routes/laboratorioRoutes');
-const blocoRoutes = require('./routes/blocoRoutes');
-console.log('Rotas carregadas com sucesso');
-
-// Rotas da API
-app.use('/api/v1/instituicoes', instituicaoRoutes);
-app.use('/api/v1/cursos', cursoRoutes);
-app.use('/api/v1/professores', professorRoutes);
-app.use('/api/v1/disciplinas', disciplinaRoutes);
-app.use('/api/v1/laboratorios', laboratorioRoutes);
-app.use('/api/v1/blocos', blocoRoutes);
-console.log('Rotas registradas: /api/v1/instituicoes, /api/v1/cursos, /api/v1/professores, /api/v1/disciplinas, /api/v1/laboratorios, /api/v1/blocos');
+try {
+  const instituicaoRoutes = require('./routes/instituicoes');
+  const cursoRoutes = require('./routes/cursos');
+  const professorRoutes = require('./routes/professores');
+  const disciplinaRoutes = require('./routes/disciplinas');
+  const laboratorioRoutes = require('./routes/laboratorioRoutes');
+  const blocoRoutes = require('./routes/blocoRoutes');
+  const aulaRoutes = require('./routes/aulaRoutes');
+  
+  // Rotas da API
+  app.use('/api/v1/instituicoes', instituicaoRoutes);
+  app.use('/api/v1/cursos', cursoRoutes);
+  app.use('/api/v1/professores', professorRoutes);
+  app.use('/api/v1/disciplinas', disciplinaRoutes);
+  app.use('/api/v1/laboratorios', laboratorioRoutes);
+  app.use('/api/v1/blocos', blocoRoutes);
+  app.use('/api/v1/aulas', aulaRoutes);
+  
+  console.log('Rotas registradas: /api/v1/instituicoes, /api/v1/cursos, /api/v1/professores, /api/v1/disciplinas, /api/v1/laboratorios, /api/v1/blocos, /api/v1/aulas');
+} catch (error) {
+  console.error('Erro ao carregar rotas:', error.message);
+}
 
 // Configurar Swagger
 const { setupSwagger } = require('./config/swagger');
