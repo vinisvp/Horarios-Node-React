@@ -150,4 +150,38 @@ export const disciplinasService = {
   remover: (id) => api.delete(`/disciplinas/${id}`),
 };
 
+/**
+ * Serviços para operações com aulas
+ */
+export const aulasService = {
+  /**
+   * Lista todas as aulas
+   * @param {Object} params - Parâmetros de consulta
+   * @returns {Promise} Promise com dados das aulas
+   */
+  listar: (params = {}) => api.get('/aulas', { params }),
+
+  /**
+   * Cria uma nova aula
+   * @param {Object} data - Dados da aula
+   * @returns {Promise} Promise com dados da aula criada
+   */
+  criar: (data) => api.post('/aulas', data),
+
+  /**
+   * Atualiza uma aula
+   * @param {string} id - ID da aula
+   * @param {Object} data - Dados para atualização
+   * @returns {Promise} Promise com dados da aula atualizada
+   */
+  atualizar: (id, data) => api.put(`/aulas/${id}`, data),
+
+  /**
+   * Remove uma aula
+   * @param {string} id - ID da aula
+   * @returns {Promise} Promise da operação
+   */
+  remover: (id) => api.delete(`/aulas/${id}`),
+};
+
 export default api;

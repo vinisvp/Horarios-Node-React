@@ -79,6 +79,14 @@ const MainScreen = ({ navigation }) => {
             right={props => <List.Icon {...props} icon="chevron-right" />}
             onPress={() => navigation.navigate('Blocos')}
           />
+          
+          <List.Item
+            title="Aulas / Agendamentos"
+            description="Gerenciar aulas e agendamentos do sistema"
+            left={props => <List.Icon {...props} icon="calendar-clock" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+            onPress={() => navigation.navigate('Aulas')}
+          />
         </List.Section>
       </View>
     </View>

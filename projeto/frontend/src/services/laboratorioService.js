@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 /**
  * @fileoverview Serviço para operações com laboratórios
@@ -23,10 +23,7 @@ const laboratorioService = {
    * @param {number} [params.limit=20] - Itens por página
    * @returns {Promise<Object>} Resposta com laboratórios e paginação
    */
-  async getAll(params = {}) {
-    const response = await api.get('/laboratorios', { params });
-    return response.data;
-  },
+  listar: async (params = {}) => await api.get("/laboratorios", { params }),
 
   /**
    * Busca laboratório por ID
@@ -52,7 +49,7 @@ const laboratorioService = {
    * @returns {Promise<Object>} Laboratório criado
    */
   async create(laboratorio) {
-    const response = await api.post('/laboratorios', laboratorio);
+    const response = await api.post("/laboratorios", laboratorio);
     return response.data;
   },
 
@@ -78,7 +75,7 @@ const laboratorioService = {
    */
   async delete(id) {
     await api.delete(`/laboratorios/${id}`);
-  }
+  },
 };
 
 export default laboratorioService;

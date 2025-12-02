@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -24,13 +24,13 @@ import {
   Alert,
   TableSortLabel,
   Grid,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-} from '@mui/icons-material';
-import blocoService from '../../services/blocoService';
+} from "@mui/icons-material";
+import blocoService from "../../services/blocoService";
 
 /**
  * Componente para gerenciamento de blocos de horários
@@ -43,24 +43,32 @@ const Blocos = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingBloco, setEditingBloco] = useState(null);
   const [formData, setFormData] = useState({
-    turno: '',
-    diaSemana: '',
-    inicio: '',
-    fim: '',
-    ordem: ''
+    turno: "",
+    diaSemana: "",
+    inicio: "",
+    fim: "",
+    ordem: "",
   });
-  const [filtroTurno, setFiltroTurno] = useState('');
-  const [filtroDiaSemana, setFiltroDiaSemana] = useState('');
-  const [orderBy, setOrderBy] = useState('turno');
-  const [order, setOrder] = useState('asc');
+  const [filtroTurno, setFiltroTurno] = useState("");
+  const [filtroDiaSemana, setFiltroDiaSemana] = useState("");
+  const [orderBy, setOrderBy] = useState("turno");
+  const [order, setOrder] = useState("asc");
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: '',
-    severity: 'success'
+    message: "",
+    severity: "success",
   });
 
-  const turnos = ['Manhã', 'Tarde', 'Noite', 'Integral'];
-  const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+  const turnos = ["Manhã", "Tarde", "Noite", "Integral"];
+  const diasSemana = [
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado",
+    "Domingo",
+  ];
 
   /**
    * Carrega lista de blocos
@@ -70,10 +78,10 @@ const Blocos = () => {
   const carregarBlocos = async () => {
     try {
       setLoading(true);
-      const response = await blocoService.getAll();
-      setBlocos(response.blocos || []);
+      const response = await blocoService.listar();
+      setBlocos(response.data?.blocos || response.data || []);
     } catch (error) {
-      mostrarSnackbar('Erro ao carregar blocos de horários', 'error');
+      mostrarSnackbar("Erro ao carregar blocos de horários", "error");
     } finally {
       setLoading(false);
     }
@@ -85,7 +93,7 @@ const Blocos = () => {
    * @param {string} message - Mensagem a ser exibida
    * @param {string} severity - Tipo da mensagem (success, error, warning, info)
    */
-  const mostrarSnackbar = (message, severity = 'success') => {
+  const mostrarSnackbar = (message, severity = "success") => {
     setSnackbar({ open: true, message, severity });
   };
 
@@ -110,16 +118,16 @@ const Blocos = () => {
         diaSemana: bloco.diaSemana,
         inicio: bloco.inicio,
         fim: bloco.fim,
-        ordem: bloco.ordem.toString()
+        ordem: bloco.ordem.toString(),
       });
     } else {
       setEditingBloco(null);
       setFormData({
-        turno: '',
-        diaSemana: '',
-        inicio: '',
-        fim: '',
-        ordem: ''
+        turno: "",
+        diaSemana: "",
+        inicio: "",
+        fim: "",
+        ordem: "",
       });
     }
     setDialogOpen(true);
@@ -133,11 +141,11 @@ const Blocos = () => {
     setDialogOpen(false);
     setEditingBloco(null);
     setFormData({
-      turno: '',
-      diaSemana: '',
-      inicio: '',
-      fim: '',
-      ordem: ''
+      turno: "",
+      diaSemana: "",
+      inicio: "",
+      fim: "",
+      ordem: "",
     });
   };
 
@@ -148,9 +156,9 @@ const Blocos = () => {
    */
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -172,7 +180,7 @@ const Blocos = () => {
    * @returns {number} Minutos desde 00:00
    */
   const horarioParaMinutos = (horario) => {
-    const [horas, minutos] = horario.split(':').map(Number);
+    const [horas, minutos] = horario.split(":").map(Number);
     return horas * 60 + minutos;
   };
 
@@ -183,39 +191,42 @@ const Blocos = () => {
    */
   const validarFormulario = () => {
     if (!formData.turno) {
-      mostrarSnackbar('Turno é obrigatório', 'error');
+      mostrarSnackbar("Turno é obrigatório", "error");
       return false;
     }
-    
+
     if (!formData.diaSemana) {
-      mostrarSnackbar('Dia da semana é obrigatório', 'error');
+      mostrarSnackbar("Dia da semana é obrigatório", "error");
       return false;
     }
-    
+
     if (!formData.inicio || !validarHorario(formData.inicio)) {
-      mostrarSnackbar('Horário de início deve estar no formato HH:mm', 'error');
+      mostrarSnackbar("Horário de início deve estar no formato HH:mm", "error");
       return false;
     }
-    
+
     if (!formData.fim || !validarHorario(formData.fim)) {
-      mostrarSnackbar('Horário de fim deve estar no formato HH:mm', 'error');
+      mostrarSnackbar("Horário de fim deve estar no formato HH:mm", "error");
       return false;
     }
-    
+
     const inicioMinutos = horarioParaMinutos(formData.inicio);
     const fimMinutos = horarioParaMinutos(formData.fim);
-    
+
     if (inicioMinutos >= fimMinutos) {
-      mostrarSnackbar('Horário de início deve ser anterior ao horário de fim', 'error');
+      mostrarSnackbar(
+        "Horário de início deve ser anterior ao horário de fim",
+        "error"
+      );
       return false;
     }
-    
+
     const ordem = parseInt(formData.ordem);
     if (!ordem || ordem < 1) {
-      mostrarSnackbar('Ordem deve ser um número positivo', 'error');
+      mostrarSnackbar("Ordem deve ser um número positivo", "error");
       return false;
     }
-    
+
     return true;
   };
 
@@ -234,29 +245,29 @@ const Blocos = () => {
         diaSemana: formData.diaSemana,
         inicio: formData.inicio,
         fim: formData.fim,
-        ordem: parseInt(formData.ordem)
+        ordem: parseInt(formData.ordem),
       };
 
       if (editingBloco) {
         await blocoService.update(editingBloco._id, dadosBloco);
-        mostrarSnackbar('Bloco atualizado com sucesso');
+        mostrarSnackbar("Bloco atualizado com sucesso");
       } else {
         await blocoService.create(dadosBloco);
-        mostrarSnackbar('Bloco criado com sucesso');
+        mostrarSnackbar("Bloco criado com sucesso");
       }
 
       fecharDialog();
       carregarBlocos();
     } catch (error) {
-      let message = 'Erro ao salvar bloco';
-      
+      let message = "Erro ao salvar bloco";
+
       if (error.response?.status === 409) {
-        message = 'Um bloco já existe para este Turno, Dia e Ordem';
+        message = "Um bloco já existe para este Turno, Dia e Ordem";
       } else if (error.response?.data?.message) {
         message = error.response.data.message;
       }
-      
-      mostrarSnackbar(message, 'error');
+
+      mostrarSnackbar(message, "error");
     } finally {
       setLoading(false);
     }
@@ -269,18 +280,20 @@ const Blocos = () => {
    * @param {string} id - ID do bloco
    */
   const removerBloco = async (id) => {
-    if (!window.confirm('Tem certeza que deseja remover este bloco de horário?')) {
+    if (
+      !window.confirm("Tem certeza que deseja remover este bloco de horário?")
+    ) {
       return;
     }
 
     try {
       setLoading(true);
       await blocoService.delete(id);
-      mostrarSnackbar('Bloco removido com sucesso');
+      mostrarSnackbar("Bloco removido com sucesso");
       carregarBlocos();
     } catch (error) {
-      const message = error.response?.data?.message || 'Erro ao remover bloco';
-      mostrarSnackbar(message, 'error');
+      const message = error.response?.data?.message || "Erro ao remover bloco";
+      mostrarSnackbar(message, "error");
     } finally {
       setLoading(false);
     }
@@ -292,8 +305,8 @@ const Blocos = () => {
    * @param {string} property - Propriedade para ordenar
    */
   const handleSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -303,9 +316,10 @@ const Blocos = () => {
    * @returns {Array} Lista filtrada e ordenada
    */
   const getBlocosFiltrados = () => {
-    let filtered = blocos.filter(bloco => {
+    let filtered = blocos.filter((bloco) => {
       const matchTurno = !filtroTurno || bloco.turno === filtroTurno;
-      const matchDiaSemana = !filtroDiaSemana || 
+      const matchDiaSemana =
+        !filtroDiaSemana ||
         bloco.diaSemana.toLowerCase().includes(filtroDiaSemana.toLowerCase());
       return matchTurno && matchDiaSemana;
     });
@@ -313,13 +327,13 @@ const Blocos = () => {
     return filtered.sort((a, b) => {
       let aValue = a[orderBy];
       let bValue = b[orderBy];
-      
-      if (typeof aValue === 'string') {
+
+      if (typeof aValue === "string") {
         aValue = aValue.toLowerCase();
         bValue = bValue.toLowerCase();
       }
-      
-      if (order === 'asc') {
+
+      if (order === "asc") {
         return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
       } else {
         return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
@@ -334,7 +348,14 @@ const Blocos = () => {
   return (
     <Box sx={{ p: 2 }}>
       {/* Cabeçalho */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
         <Typography variant="h5">Blocos de Horários</Typography>
         <Button
           variant="contained"
@@ -357,8 +378,10 @@ const Blocos = () => {
               label="Filtrar por Turno"
             >
               <MenuItem value="">Todos</MenuItem>
-              {turnos.map(turno => (
-                <MenuItem key={turno} value={turno}>{turno}</MenuItem>
+              {turnos.map((turno) => (
+                <MenuItem key={turno} value={turno}>
+                  {turno}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -380,18 +403,18 @@ const Blocos = () => {
             <TableRow>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'turno'}
-                  direction={orderBy === 'turno' ? order : 'asc'}
-                  onClick={() => handleSort('turno')}
+                  active={orderBy === "turno"}
+                  direction={orderBy === "turno" ? order : "asc"}
+                  onClick={() => handleSort("turno")}
                 >
                   Turno
                 </TableSortLabel>
               </TableCell>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'diaSemana'}
-                  direction={orderBy === 'diaSemana' ? order : 'asc'}
-                  onClick={() => handleSort('diaSemana')}
+                  active={orderBy === "diaSemana"}
+                  direction={orderBy === "diaSemana" ? order : "asc"}
+                  onClick={() => handleSort("diaSemana")}
                 >
                   Dia da Semana
                 </TableSortLabel>
@@ -400,9 +423,9 @@ const Blocos = () => {
               <TableCell>Fim</TableCell>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'ordem'}
-                  direction={orderBy === 'ordem' ? order : 'asc'}
-                  onClick={() => handleSort('ordem')}
+                  active={orderBy === "ordem"}
+                  direction={orderBy === "ordem" ? order : "asc"}
+                  onClick={() => handleSort("ordem")}
                 >
                   Ordem
                 </TableSortLabel>
@@ -440,7 +463,7 @@ const Blocos = () => {
             {getBlocosFiltrados().length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} align="center">
-                  {loading ? 'Carregando...' : 'Nenhum bloco encontrado'}
+                  {loading ? "Carregando..." : "Nenhum bloco encontrado"}
                 </TableCell>
               </TableRow>
             )}
@@ -451,10 +474,10 @@ const Blocos = () => {
       {/* Dialog de Criação/Edição */}
       <Dialog open={dialogOpen} onClose={fecharDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
-          {editingBloco ? 'Editar Bloco' : 'Novo Bloco'}
+          {editingBloco ? "Editar Bloco" : "Novo Bloco"}
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, pt: 1 }}>
             <FormControl fullWidth required>
               <InputLabel>Turno</InputLabel>
               <Select
@@ -463,12 +486,14 @@ const Blocos = () => {
                 onChange={handleInputChange}
                 label="Turno"
               >
-                {turnos.map(turno => (
-                  <MenuItem key={turno} value={turno}>{turno}</MenuItem>
+                {turnos.map((turno) => (
+                  <MenuItem key={turno} value={turno}>
+                    {turno}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            
+
             <FormControl fullWidth required>
               <InputLabel>Dia da Semana</InputLabel>
               <Select
@@ -477,12 +502,14 @@ const Blocos = () => {
                 onChange={handleInputChange}
                 label="Dia da Semana"
               >
-                {diasSemana.map(dia => (
-                  <MenuItem key={dia} value={dia}>{dia}</MenuItem>
+                {diasSemana.map((dia) => (
+                  <MenuItem key={dia} value={dia}>
+                    {dia}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            
+
             <TextField
               name="inicio"
               label="Início *"
@@ -491,9 +518,9 @@ const Blocos = () => {
               fullWidth
               required
               placeholder="HH:mm"
-              inputProps={{ pattern: '[0-2][0-9]:[0-5][0-9]' }}
+              inputProps={{ pattern: "[0-2][0-9]:[0-5][0-9]" }}
             />
-            
+
             <TextField
               name="fim"
               label="Fim *"
@@ -502,9 +529,9 @@ const Blocos = () => {
               fullWidth
               required
               placeholder="HH:mm"
-              inputProps={{ pattern: '[0-2][0-9]:[0-5][0-9]' }}
+              inputProps={{ pattern: "[0-2][0-9]:[0-5][0-9]" }}
             />
-            
+
             <TextField
               name="ordem"
               label="Ordem *"
@@ -520,7 +547,7 @@ const Blocos = () => {
         <DialogActions>
           <Button onClick={fecharDialog}>Cancelar</Button>
           <Button onClick={salvarBloco} variant="contained" disabled={loading}>
-            {editingBloco ? 'Atualizar' : 'Criar'}
+            {editingBloco ? "Atualizar" : "Criar"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -530,7 +557,7 @@ const Blocos = () => {
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={fecharSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <Alert onClose={fecharSnackbar} severity={snackbar.severity}>
           {snackbar.message}

@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const config = require('./configurationLoader');
+const mongoose = require("mongoose");
+const config = require("./configurationLoader");
 
 /**
  * Configuração e conexão com MongoDB
@@ -12,13 +12,15 @@ const config = require('./configurationLoader');
  */
 const connectDatabase = async () => {
   try {
-    const { host, port, username, password, database } = config.mongo;
-    const connectionString = `mongodb://${username}:${password}@${host}:${port}/${database}?authSource=admin`;
-    
+    const { host, port, username, password, database, URI } = config.mongo;
+    const connectionString =
+      URI ||
+      `mongodb://${username}:${password}@${host}:${port}/${database}?authSource=admin`;
+
     await mongoose.connect(connectionString);
-    console.log('Conectado ao MongoDB com sucesso:', connectionString);
+    console.log("Conectado ao MongoDB com sucesso:", connectionString);
   } catch (error) {
-    console.error('Erro ao conectar ao MongoDB:', error.message);
+    console.error("Erro ao conectar ao MongoDB:", error.message);
     process.exit(1);
   }
 };
