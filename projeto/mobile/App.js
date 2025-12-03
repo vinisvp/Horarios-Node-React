@@ -10,6 +10,7 @@ import ProfessoresScreen from './src/components/Professores/ProfessoresScreen';
 import DisciplinasScreen from './src/components/Disciplinas/DisciplinasScreen';
 import LaboratoriosScreen from './src/components/Laboratorios/LaboratoriosScreen';
 import BlocosScreen from './src/components/Blocos/BlocosScreen';
+import AulasScreen from './src/components/Aulas/AulasScreen';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,11 @@ export default function App() {
             name="Blocos" 
             component={BlocosScreen}
             options={{ title: 'Gerenciamento de Blocos de Horários' }}
+          />
+          <Stack.Screen 
+            name="Aulas" 
+            component={AulasScreen}
+            options={{ title: 'Gerenciamento de Aulas / Agendamentos' }}
           />
         </Stack.Navigator>
         <StatusBar style="auto" />

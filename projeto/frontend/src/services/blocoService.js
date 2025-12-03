@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 /**
  * @fileoverview Serviço para operações com blocos de horários
@@ -22,10 +22,7 @@ const blocoService = {
    * @param {number} [params.limit=20] - Itens por página
    * @returns {Promise<Object>} Resposta com blocos e paginação
    */
-  async getAll(params = {}) {
-    const response = await api.get('/blocos', { params });
-    return response.data;
-  },
+  listar: async (params = {}) => await api.get("/blocos", { params }),
 
   /**
    * Busca bloco por ID
@@ -52,7 +49,7 @@ const blocoService = {
    * @returns {Promise<Object>} Bloco criado
    */
   async create(bloco) {
-    const response = await api.post('/blocos', bloco);
+    const response = await api.post("/blocos", bloco);
     return response.data;
   },
 
@@ -78,7 +75,7 @@ const blocoService = {
    */
   async delete(id) {
     await api.delete(`/blocos/${id}`);
-  }
+  },
 };
 
 export default blocoService;

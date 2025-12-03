@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -24,14 +24,14 @@ import {
   Alert,
   TableSortLabel,
   Chip,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   Search as SearchIcon,
-} from '@mui/icons-material';
-import laboratorioService from '../../services/laboratorioService';
+} from "@mui/icons-material";
+import laboratorioService from "../../services/laboratorioService";
 
 /**
  * Componente para gerenciamento de laboratórios
@@ -44,18 +44,18 @@ const Laboratorios = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingLaboratorio, setEditingLaboratorio] = useState(null);
   const [formData, setFormData] = useState({
-    nome: '',
-    capacidade: '',
-    local: '',
-    status: 'Ativo'
+    nome: "",
+    capacidade: "",
+    local: "",
+    status: "Ativo",
   });
-  const [filtro, setFiltro] = useState('');
-  const [orderBy, setOrderBy] = useState('nome');
-  const [order, setOrder] = useState('asc');
+  const [filtro, setFiltro] = useState("");
+  const [orderBy, setOrderBy] = useState("nome");
+  const [order, setOrder] = useState("asc");
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: '',
-    severity: 'success'
+    message: "",
+    severity: "success",
   });
 
   /**
@@ -66,10 +66,10 @@ const Laboratorios = () => {
   const carregarLaboratorios = async () => {
     try {
       setLoading(true);
-      const response = await laboratorioService.getAll();
-      setLaboratorios(response.laboratorios || []);
+      const response = await laboratorioService.listar();
+      setLaboratorios(response.data?.laboratorios || response.data || []);
     } catch (error) {
-      mostrarSnackbar('Erro ao carregar laboratórios', 'error');
+      mostrarSnackbar("Erro ao carregar laboratórios", "error");
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ const Laboratorios = () => {
    * @param {string} message - Mensagem a ser exibida
    * @param {string} severity - Tipo da mensagem (success, error, warning, info)
    */
-  const mostrarSnackbar = (message, severity = 'success') => {
+  const mostrarSnackbar = (message, severity = "success") => {
     setSnackbar({ open: true, message, severity });
   };
 
@@ -104,16 +104,16 @@ const Laboratorios = () => {
       setFormData({
         nome: laboratorio.nome,
         capacidade: laboratorio.capacidade.toString(),
-        local: laboratorio.local || '',
-        status: laboratorio.status
+        local: laboratorio.local || "",
+        status: laboratorio.status,
       });
     } else {
       setEditingLaboratorio(null);
       setFormData({
-        nome: '',
-        capacidade: '',
-        local: '',
-        status: 'Ativo'
+        nome: "",
+        capacidade: "",
+        local: "",
+        status: "Ativo",
       });
     }
     setDialogOpen(true);
@@ -127,10 +127,10 @@ const Laboratorios = () => {
     setDialogOpen(false);
     setEditingLaboratorio(null);
     setFormData({
-      nome: '',
-      capacidade: '',
-      local: '',
-      status: 'Ativo'
+      nome: "",
+      capacidade: "",
+      local: "",
+      status: "Ativo",
     });
   };
 
@@ -141,9 +141,9 @@ const Laboratorios = () => {
    */
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -154,16 +154,16 @@ const Laboratorios = () => {
    */
   const validarFormulario = () => {
     if (!formData.nome.trim()) {
-      mostrarSnackbar('Nome é obrigatório', 'error');
+      mostrarSnackbar("Nome é obrigatório", "error");
       return false;
     }
-    
+
     const capacidade = parseInt(formData.capacidade);
     if (!capacidade || capacidade <= 0) {
-      mostrarSnackbar('Capacidade deve ser um número maior que 0', 'error');
+      mostrarSnackbar("Capacidade deve ser um número maior que 0", "error");
       return false;
     }
-    
+
     return true;
   };
 
@@ -181,22 +181,26 @@ const Laboratorios = () => {
         nome: formData.nome.trim(),
         capacidade: parseInt(formData.capacidade),
         local: formData.local.trim() || undefined,
-        status: formData.status
+        status: formData.status,
       };
 
       if (editingLaboratorio) {
-        await laboratorioService.update(editingLaboratorio._id, dadosLaboratorio);
-        mostrarSnackbar('Laboratório atualizado com sucesso');
+        await laboratorioService.update(
+          editingLaboratorio._id,
+          dadosLaboratorio
+        );
+        mostrarSnackbar("Laboratório atualizado com sucesso");
       } else {
         await laboratorioService.create(dadosLaboratorio);
-        mostrarSnackbar('Laboratório criado com sucesso');
+        mostrarSnackbar("Laboratório criado com sucesso");
       }
 
       fecharDialog();
       carregarLaboratorios();
     } catch (error) {
-      const message = error.response?.data?.message || 'Erro ao salvar laboratório';
-      mostrarSnackbar(message, 'error');
+      const message =
+        error.response?.data?.message || "Erro ao salvar laboratório";
+      mostrarSnackbar(message, "error");
     } finally {
       setLoading(false);
     }
@@ -209,18 +213,19 @@ const Laboratorios = () => {
    * @param {string} id - ID do laboratório
    */
   const removerLaboratorio = async (id) => {
-    if (!window.confirm('Tem certeza que deseja remover este laboratório?')) {
+    if (!window.confirm("Tem certeza que deseja remover este laboratório?")) {
       return;
     }
 
     try {
       setLoading(true);
       await laboratorioService.delete(id);
-      mostrarSnackbar('Laboratório removido com sucesso');
+      mostrarSnackbar("Laboratório removido com sucesso");
       carregarLaboratorios();
     } catch (error) {
-      const message = error.response?.data?.message || 'Erro ao remover laboratório';
-      mostrarSnackbar(message, 'error');
+      const message =
+        error.response?.data?.message || "Erro ao remover laboratório";
+      mostrarSnackbar(message, "error");
     } finally {
       setLoading(false);
     }
@@ -232,8 +237,8 @@ const Laboratorios = () => {
    * @param {string} property - Propriedade para ordenar
    */
   const handleSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -243,21 +248,22 @@ const Laboratorios = () => {
    * @returns {Array} Lista filtrada e ordenada
    */
   const getLaboratoriosFiltrados = () => {
-    let filtered = laboratorios.filter(lab =>
-      lab.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-      (lab.local && lab.local.toLowerCase().includes(filtro.toLowerCase()))
+    let filtered = laboratorios.filter(
+      (lab) =>
+        lab.nome.toLowerCase().includes(filtro.toLowerCase()) ||
+        (lab.local && lab.local.toLowerCase().includes(filtro.toLowerCase()))
     );
 
     return filtered.sort((a, b) => {
       let aValue = a[orderBy];
       let bValue = b[orderBy];
-      
-      if (typeof aValue === 'string') {
+
+      if (typeof aValue === "string") {
         aValue = aValue.toLowerCase();
         bValue = bValue.toLowerCase();
       }
-      
-      if (order === 'asc') {
+
+      if (order === "asc") {
         return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
       } else {
         return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
@@ -272,7 +278,14 @@ const Laboratorios = () => {
   return (
     <Box sx={{ p: 2 }}>
       {/* Cabeçalho */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
         <Typography variant="h5">Laboratórios</Typography>
         <Button
           variant="contained"
@@ -292,7 +305,9 @@ const Laboratorios = () => {
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
           InputProps={{
-            startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
+            startAdornment: (
+              <SearchIcon sx={{ mr: 1, color: "text.secondary" }} />
+            ),
           }}
         />
       </Box>
@@ -304,36 +319,36 @@ const Laboratorios = () => {
             <TableRow>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'nome'}
-                  direction={orderBy === 'nome' ? order : 'asc'}
-                  onClick={() => handleSort('nome')}
+                  active={orderBy === "nome"}
+                  direction={orderBy === "nome" ? order : "asc"}
+                  onClick={() => handleSort("nome")}
                 >
                   Nome
                 </TableSortLabel>
               </TableCell>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'capacidade'}
-                  direction={orderBy === 'capacidade' ? order : 'asc'}
-                  onClick={() => handleSort('capacidade')}
+                  active={orderBy === "capacidade"}
+                  direction={orderBy === "capacidade" ? order : "asc"}
+                  onClick={() => handleSort("capacidade")}
                 >
                   Capacidade
                 </TableSortLabel>
               </TableCell>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'local'}
-                  direction={orderBy === 'local' ? order : 'asc'}
-                  onClick={() => handleSort('local')}
+                  active={orderBy === "local"}
+                  direction={orderBy === "local" ? order : "asc"}
+                  onClick={() => handleSort("local")}
                 >
                   Local
                 </TableSortLabel>
               </TableCell>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === 'status'}
-                  direction={orderBy === 'status' ? order : 'asc'}
-                  onClick={() => handleSort('status')}
+                  active={orderBy === "status"}
+                  direction={orderBy === "status" ? order : "asc"}
+                  onClick={() => handleSort("status")}
                 >
                   Status
                 </TableSortLabel>
@@ -346,11 +361,13 @@ const Laboratorios = () => {
               <TableRow key={laboratorio._id}>
                 <TableCell>{laboratorio.nome}</TableCell>
                 <TableCell>{laboratorio.capacidade}</TableCell>
-                <TableCell>{laboratorio.local || '-'}</TableCell>
+                <TableCell>{laboratorio.local || "-"}</TableCell>
                 <TableCell>
                   <Chip
                     label={laboratorio.status}
-                    color={laboratorio.status === 'Ativo' ? 'success' : 'default'}
+                    color={
+                      laboratorio.status === "Ativo" ? "success" : "default"
+                    }
                     size="small"
                   />
                 </TableCell>
@@ -376,7 +393,7 @@ const Laboratorios = () => {
             {getLaboratoriosFiltrados().length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} align="center">
-                  {loading ? 'Carregando...' : 'Nenhum laboratório encontrado'}
+                  {loading ? "Carregando..." : "Nenhum laboratório encontrado"}
                 </TableCell>
               </TableRow>
             )}
@@ -387,10 +404,10 @@ const Laboratorios = () => {
       {/* Dialog de Criação/Edição */}
       <Dialog open={dialogOpen} onClose={fecharDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
-          {editingLaboratorio ? 'Editar Laboratório' : 'Novo Laboratório'}
+          {editingLaboratorio ? "Editar Laboratório" : "Novo Laboratório"}
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, pt: 1 }}>
             <TextField
               name="nome"
               label="Nome *"
@@ -433,8 +450,12 @@ const Laboratorios = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={fecharDialog}>Cancelar</Button>
-          <Button onClick={salvarLaboratorio} variant="contained" disabled={loading}>
-            {editingLaboratorio ? 'Atualizar' : 'Criar'}
+          <Button
+            onClick={salvarLaboratorio}
+            variant="contained"
+            disabled={loading}
+          >
+            {editingLaboratorio ? "Atualizar" : "Criar"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -444,7 +465,7 @@ const Laboratorios = () => {
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={fecharSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <Alert onClose={fecharSnackbar} severity={snackbar.severity}>
           {snackbar.message}
