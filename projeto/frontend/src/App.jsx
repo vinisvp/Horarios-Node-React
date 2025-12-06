@@ -2,7 +2,8 @@ import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Layout from './components/Layout/Layout';
-import { Typography, Box } from '@mui/material';
+import ConsultaHorarios from './components/ConsultaHorarios/ConsultaHorarios';
+import { Box } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -18,12 +19,7 @@ function App() {
       <CssBaseline />
       <Layout>
         <Box sx={{ p: 2 }}>
-          <Typography variant="h4">
-            Sistema de Laboratórios
-          </Typography>
-          <Typography variant="body1">
-            Use o menu lateral para navegar.
-          </Typography>
+          <ConsultaHorarios />
         </Box>
       </Layout>
     </ThemeProvider>
